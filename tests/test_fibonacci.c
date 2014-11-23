@@ -13,25 +13,27 @@ int main()
 
     for(int i = 0; i < 100; ++i)
     {
-	fibonacci_add(heap, i);
+	fibonacci_add(heap, i, NULL);
     }
 
     for(int i = 0; i < 50; ++i)
     {
 //	fibonacci_dump(heap);
-	int min = fibonacci_extract_min(heap);
+	void* data;
+	int min = fibonacci_extract_min(heap, &data);
 	ASSERT_EQ(min, i);
     }
 
     for(int i = 0; i < 20; ++i)
     {
-	fibonacci_add(heap, i * 4);
+	fibonacci_add(heap, i * 4, NULL);
     }
 
     while(!fibonacci_empty(heap))
     {
 //	fibonacci_dump(heap);
-	fibonacci_extract_min(heap);
+	void* data;
+	fibonacci_extract_min(heap, &data);
     }
 
     fibonacci_free(heap);

@@ -9,10 +9,10 @@
 #include "exit_code.h"
 
 
-static void create_root(fibonacci_heap* heap, int val)
+static void create_root(fibonacci_heap* heap, int val, void* data)
 {
     fibonacci_root* root = malloc(sizeof(fibonacci_root));
-    root->heap = heap_create(val);
+    root->heap = heap_create(val, data);
     
     fibonacci_root* prev = heap->min;
     fibonacci_root* next = prev->next;
@@ -30,10 +30,10 @@ static void create_root(fibonacci_heap* heap, int val)
     }
 }
 
-static void create_initial_root(fibonacci_heap* heap, int val)
+static void create_initial_root(fibonacci_heap* heap, int val, void* data)
 {
     fibonacci_root* root = malloc(sizeof(fibonacci_root));
-    root->heap = heap_create(val);
+    root->heap = heap_create(val, data);
     
     root->prev = root;
     root->next = root;
@@ -178,20 +178,20 @@ _Bool fibonacci_empty(fibonacci_heap* heap)
     return heap->nelems == 0;
 }
 
-void fibonacci_add(fibonacci_heap* heap, int val)
+void fibonacci_add(fibonacci_heap* heap, int val, void* data)
 {
     if(!fibonacci_empty(heap))
     {
-	create_root(heap, val);
+	create_root(heap, val, data);
     }
     else
     {
-	create_initial_root(heap, val);
+	create_initial_root(heap, val, data);
     }
     heap->nelems++;
 }
 
-int fibonacci_extract_min(fibonacci_heap* heap)
+int fibonacci_extract_min(fibonacci_heap* heap, void** outData)
 {
     if(fibonacci_empty(heap))
     {
@@ -203,8 +203,7 @@ int fibonacci_extract_min(fibonacci_heap* heap)
     heap_t* min_heap = min_root->heap;
     
     int min_val = min_heap->val;
-    
-
+    *outData = min_heap->data;
 
      
     if(heap->nelems == 1)

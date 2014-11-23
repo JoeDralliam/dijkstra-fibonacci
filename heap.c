@@ -20,10 +20,11 @@ _Bool pred(void* heap0, void* parent0)
 }
 
 
-heap_t* heap_create(int val)
+heap_t* heap_create(int val, void* data)
 {
     heap_t* heap = malloc(sizeof(heap_t));
     heap->val = val;
+    heap->data = data;
     heap->children = array_create();
     return heap;
 }

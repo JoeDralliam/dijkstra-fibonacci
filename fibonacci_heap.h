@@ -27,9 +27,9 @@ void fibonacci_free(fibonacci_heap* heap);
 
 _Bool fibonacci_empty(fibonacci_heap* heap);
 
-void fibonacci_add(fibonacci_heap* heap, int val);
+void fibonacci_add(fibonacci_heap* heap, int val, void* data);
 
-int fibonacci_extract_min(fibonacci_heap* heap);
+int fibonacci_extract_min(fibonacci_heap* heap, void** dataOut);
 
 void fibonacci_dump(fibonacci_heap* heap);
 

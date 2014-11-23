@@ -5,10 +5,11 @@
 
 typedef struct heap_t {
     int val;
+    void* data;
     gen_array children;
 } heap_t;
 
-heap_t* heap_create(int val);
+heap_t* heap_create(int val, void* data);
 
 void heap_free(heap_t*);
 void heap_recursive_free(heap_t*);

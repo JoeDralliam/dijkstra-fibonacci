@@ -40,9 +40,9 @@ void array_grow(gen_array* a, size_t l);
 
 void array_shrink(gen_array* a, size_t l);
 
-element_t array_get(gen_array* a, size_t i);
+element_t array_get(gen_array const* a, size_t i);
 void array_set(gen_array* a, size_t i, element_t val);
-size_t array_length(gen_array* a);
+size_t array_length(gen_array const* a);
 
 
 /* a[0] && a[1] && .. && a[n] */
@@ -50,6 +50,9 @@ _Bool array_forall(gen_array* a, _Bool (*pred)(element_t, void*), void* param);
 
 /* a[0] || a[1] || .. || a[n] */
 _Bool array_exists(gen_array* a, _Bool (*pred)(element_t, void*), void* param);
-    
+
+void array_iter(gen_array* a, void (*fun)(element_t));
 
 #endif
+
+
