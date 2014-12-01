@@ -1,11 +1,11 @@
 CC=gcc
 
 WARNINGS=-W -Wall -Wextra -Werror
-OTHER_FLAGS=-std=c99 -I. -g
+OTHER_FLAGS=-std=c99 -I. -I/usr/include/libxml2 -g
 FLAGS= $(OTHER_FLAGS) $(WARNINGS)
 COMPILE=-c
 OUTPUT=-o
-LINK_FLAGS=-lm
+LINK_FLAGS=-lm -lxml2
 
 BUILD_DIR=_build
 TEST_DIR=tests

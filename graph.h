@@ -11,15 +11,16 @@ typedef gen_array vertex_list;
 typedef struct edge_t {
     size_t vertex;
     size_t weight;
+    void* data;
 } edge_t;
 
 typedef gen_array edge_list;
 
 graph_t graph_create(size_t verticesCount);
 
-void graph_free(graph_t* graph);
+void graph_free(graph_t* graph, void (*free_data)(void*));
 
-void graph_add_edge(graph_t* graph, size_t v1, size_t v2, size_t weight);
+void graph_add_edge(graph_t* graph, size_t v1, size_t v2, size_t weight, void* data);
 
 size_t graph_vertices_count(graph_t const* graph);
 

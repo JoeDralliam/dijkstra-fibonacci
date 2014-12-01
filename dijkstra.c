@@ -5,27 +5,30 @@
 
 #include "fibonacci_heap.h"
 
-
+    
 typedef struct data_t
 {
     struct data_t* parent;
-    size_t vertex;
+    edge_t* edge;
 } data_t;
 
-data_t* data_create(size_t vertex, data_t* parent)
+
+
+data_t* data_create(edge_t* edge, data_t* parent)    
 {
     data_t* d = malloc(sizeof(data_t));
     d->parent = parent;
-    d->vertex = vertex;
+    d->edge   = edge;    
     return d;
 }
 
-void data_extract_path(data_t* d, vertex_list* res)
+void data_extract_path(data_t* d, edge_list* res)
 {
     if(d != NULL)
     {
 	data_extract_path(d->parent, res);
-	array_push_back(res, (void*)d->vertex);
+	array_push_back(res, (void*)d->edge);
+	
     }
 }
 
@@ -55,23 +58,33 @@ distance_list dijkstra(graph_t* graph, size_t from, gen_array* paths)
     fibonacci_heap* toVisit = fibonacci_create();
 
 
-    data_t* initData = data_create(from, NULL);
-    array_push_back(&datas, initData);
-    fibonacci_add(toVisit, 0, initData);
+
+    {
+	vertex_list const* adj = graph_adjacent_vertices(graph, from);
+	size_t nAdj = array_length(adj);
+	for(size_t i = 0; i < nAdj; ++i)
+	{
+	    edge_t* edge = (edge_t*)array_get(adj, i);
+	    data_t* chData = data_create(edge, NULL);
+	    array_push_back(&datas, chData);
+	    fibonacci_add(toVisit, edge->weight, chData);
+	}
+    }
     
     while(!fibonacci_empty(toVisit))
     {
 	void* dataGen;
 	size_t minDist = fibonacci_extract_min(toVisit, &dataGen);
 	data_t* data = dataGen;
-	
-	if(!(_Bool)array_get(&visite, data->vertex))
+
+	size_t vertex = data->edge->vertex;
+	if(!(_Bool)array_get(&visite, vertex))
 	{
-	    data_extract_path(data, (gen_array*)array_get(paths, data->vertex));
-	    array_set(&distances, data->vertex, (void*)minDist);
-	    array_set(&visite, data->vertex, (void*)true);
+	    data_extract_path(data, (gen_array*)array_get(paths, vertex));
+	    array_set(&distances, vertex, (void*)minDist);
+	    array_set(&visite, vertex, (void*)true);
 	    
-	    vertex_list const* adj = graph_adjacent_vertices(graph, data->vertex);
+	    vertex_list const* adj = graph_adjacent_vertices(graph, vertex);
 	    size_t nAdj = array_length(adj);
 	    for(size_t i = 0; i < nAdj; ++i)
 	    {
@@ -80,7 +93,7 @@ distance_list dijkstra(graph_t* graph, size_t from, gen_array* paths)
 		/* This check may be omitted */
 		if(!(_Bool)array_get(&visite, edge->vertex))
 		{
-		    data_t* chData = data_create(edge->vertex, data);
+		    data_t* chData = data_create(edge, data);
 		    array_push_back(&datas, chData);
 		    fibonacci_add(toVisit, minDist + edge->weight, chData);
 		}

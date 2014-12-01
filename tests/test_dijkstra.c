@@ -2,9 +2,10 @@
 
 #include <stdio.h>
 
-void print_vertex(void* v)
+void print_edge(void* v)
 {
-    printf("-%lu-", (size_t)v);
+    edge_t* e = (edge_t*)v;
+    printf(" --> %lu", e->vertex);
 }
 
 int main(int argc, char** argv)
@@ -34,14 +35,15 @@ int main(int argc, char** argv)
 		    continue;
 		}
 		size_t minDist = (size_t)array_get(&dist, j);
-		printf("Minimal path of length %3lu from %lu to %lu found: ",
-		       minDist, i, j);
-		array_iter((gen_array*)array_get(&paths, j), print_vertex);
+		printf("Minimal path of length %3lu from %lu to %lu found: %lu",
+		       minDist, i, j, i);
+
+		array_iter((gen_array*)array_get(&paths, j), print_edge);
 		printf("\n");
 	    }
 	    dijkstra_free_paths(&paths);
 	    dijkstra_free_distances(&dist);
 	    printf("\n");
     }
-    graph_free(&graph);
+    graph_free(&graph, NULL);
 }
