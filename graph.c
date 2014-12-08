@@ -1,5 +1,6 @@
 #include "graph.h"
 
+#include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -69,6 +70,56 @@ edge_list const* graph_adjacent_vertices(graph_t const* graph, size_t v)
 {
     return array_get(graph, v);
 }
+
+_Bool connexe(graph_t const* graph)
+{
+    size_t vcount = graph_vertices_count(graph);
+    if(vcount == 0)
+    {
+	return true;
+    }
+    
+    
+    gen_array toVisit = array_create();
+    gen_array visited = array_init(vcount);
+
+    array_push_back(&toVisit, 0);
+    array_set(&visited, 0, (void*)true);
+
+    while(array_length(&toVisit) != 0)
+    {
+	size_t v = (size_t)array_back(&toVisit);
+	array_pop_back(&toVisit);
+	
+	edge_list const* adj = graph_adjacent_vertices(graph, v);
+	size_t nadj = array_length(adj);
+	for(size_t i = 0; i < nadj; ++i)
+	{
+	    size_t adj_v = ((edge_t*)array_get(adj, i))->vertex;
+	    if(!array_get(&visited, adj_v))
+	    {
+		array_push_back(&toVisit, (void*)adj_v);
+		array_set(&visited, adj_v, false);
+	    }
+	}
+    }
+
+    _Bool res = true;
+    for(size_t i = 0; i < vcount; ++i)
+    {
+	if(!array_get(&visited, i))
+	{
+	    res = false;
+	    break;
+	}
+    }
+
+    array_free(&toVisit);
+    array_free(&visited);
+
+    return res;    
+}
+
 
 graph_t graph_read_from_file(FILE* fin)
 {

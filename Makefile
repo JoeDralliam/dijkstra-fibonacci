@@ -38,4 +38,5 @@ $(BUILD_TEST_DIR)/%.o:$(TEST_DIR)/%.c $(BUILD_TEST_DIR)
 
 
 clean:
-	rm -r $(BUILD_DIR)
+	rm -rf $(BUILD_DIR)
+	rm -f $(TESTS)

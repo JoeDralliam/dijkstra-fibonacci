@@ -135,6 +135,13 @@ size_t array_length(gen_array const* a)
     return a->used;
 }
 
+
+void* array_back(gen_array const* a)
+{
+    assert(a->used > 0);
+    return a->array[a->used - 1];
+}
+
 _Bool array_forall(gen_array* a, _Bool (*pred)(element_t, void*), void* param)
 {
     for(size_t i = 0; i < a->used; ++i)

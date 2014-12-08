@@ -9,6 +9,7 @@
 #include "exit_code.h"
 
 
+/* Ajoute une racine (on suppose que heap contient au moins un élément) */
 static void create_root(fibonacci_heap* heap, int val, void* data)
 {
     fibonacci_root* root = malloc(sizeof(fibonacci_root));
@@ -30,6 +31,7 @@ static void create_root(fibonacci_heap* heap, int val, void* data)
     }
 }
 
+/* Ajoute une racine (on suppose que heap est vide) */
 static void create_initial_root(fibonacci_heap* heap, int val, void* data)
 {
     fibonacci_root* root = malloc(sizeof(fibonacci_root));
@@ -40,18 +42,22 @@ static void create_initial_root(fibonacci_heap* heap, int val, void* data)
     heap->min = root;
 }
 
+
+/* Libère un racine (mais pas ses fils) */
 static void free_root(fibonacci_root* rt)
 {
     heap_free(rt->heap);
     free(rt);
 }
 
+/* Libère une racine et ses fils */
 static void free_recursive_root(fibonacci_root* rt)
 {
     heap_recursive_free(rt->heap);
     free(rt);
 }
 
+/* Insère un tas en tant que racine entre prev et next */
 static void insert_root(heap_t* hp, fibonacci_root* prev, fibonacci_root* next)
 {
     assert(prev->next == next);
@@ -67,11 +73,13 @@ static void insert_root(heap_t* hp, fibonacci_root* prev, fibonacci_root* next)
     next->prev = root;   
 }
 
+/* Degré d'un racine (nombre de fils) */
 static size_t degree_root(fibonacci_root* rt)
 {
     return array_length(&rt->heap->children);
 }
 
+/* Fusionne deux racine en une */
 static fibonacci_root* fusion_root(fibonacci_root* a, fibonacci_root* b)
 {
     if(a->heap->val > b->heap->val)
@@ -91,7 +99,7 @@ static fibonacci_root* fusion_root(fibonacci_root* a, fibonacci_root* b)
     return a;
 }
 
-
+/* Algorithme de consolidation */
 static void consolidate(fibonacci_heap* heap, fibonacci_root* base)
 {
     size_t maxd = (size_t)log2((double)heap->nelems);

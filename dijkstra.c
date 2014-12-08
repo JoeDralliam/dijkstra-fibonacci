@@ -5,15 +5,19 @@
 
 #include "fibonacci_heap.h"
 
-    
+/* 
+Donnée conservée à l'intérieur du tas de fibonacci
+ */ 
 typedef struct data_t
 {
     struct data_t* parent;
     edge_t* edge;
 } data_t;
 
-
-
+/*
+Crée un nouvelle donnée. 
+Si edge une aretes sortant du sommet initial ("from"), parent vaut NULL.
+*/
 data_t* data_create(edge_t* edge, data_t* parent)    
 {
     data_t* d = malloc(sizeof(data_t));
@@ -22,6 +26,10 @@ data_t* data_create(edge_t* edge, data_t* parent)
     return d;
 }
 
+/*
+Reconstruit le chemin de from à d dans le tableau res.
+Le chemin est representé par un suite d'aretes.
+*/
 void data_extract_path(data_t* d, edge_list* res)
 {
     if(d != NULL)
@@ -55,9 +63,9 @@ distance_list dijkstra(graph_t* graph, size_t from, gen_array* paths)
 	array_push_back(&visite, (void*)false);
     }
 
+
+    /* Initialisation du tas */
     fibonacci_heap* toVisit = fibonacci_create();
-
-
 
     {
 	vertex_list const* adj = graph_adjacent_vertices(graph, from);
