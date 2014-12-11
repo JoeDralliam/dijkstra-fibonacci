@@ -4,6 +4,7 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <memory.h>
 
 gen_array array_create()
 {
@@ -118,24 +119,6 @@ void array_shrink(gen_array* a, size_t l)
 }
 
 
-element_t array_get(gen_array const* a, size_t i)
-{
-    assert(i < a->used);
-    return a->array[i];
-}
-
-void array_set(gen_array* a, size_t i, element_t val)
-{
-    assert(i < a->used);
-    a->array[i] = val;
-}
-
-size_t array_length(gen_array const* a)
-{
-    return a->used;
-}
-
-
 void* array_back(gen_array const* a)
 {
     assert(a->used > 0);
@@ -173,4 +156,13 @@ void array_iter(gen_array* a, void (*fun)(element_t))
     {
 	fun(a->array[i]);
     }
+}
+
+gen_array array_copy(gen_array* a)
+{
+    size_t l = a->allocated;
+    gen_array res = array_allocate(l);
+    memcpy(res.array, a->array, sizeof(void*) * a->used);
+    res.used = a->used;
+    return res;
 }

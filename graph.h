@@ -53,11 +53,14 @@ edge_list const* graph_adjacent_vertices(graph_t const* graph, size_t v);
 /*
 Teste la connexité du graph
 */
-_Bool connexe(graph_t const* graph);
+_Bool graph_connexe(graph_t const* graph);
+
+
+_Bool graph_adjacent(graph_t* graph, size_t a, size_t b);
 
 /*
 Lis le graphe à partir d'un fichier
 */
-graph_t graph_read_from_file(FILE* fin);
+graph_t graph_read_from_file(FILE* fin, size_t* nEdges);
 
 #endif

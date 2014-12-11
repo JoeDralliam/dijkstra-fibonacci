@@ -1,7 +1,8 @@
 #include "osm_xml.h"
 
-#include <stdbool.h>
 #include <assert.h>
+#include <stdbool.h>
+#include <stdint.h>
 #include <string.h>
 #include <math.h>
 
@@ -18,6 +19,14 @@ typedef struct osm_node_t
 } osm_node_t;
 
 
+size_t distance(double lat1, double lon1, double lat2, double lon2)
+{
+    double dlat = 111.32 * 1000. * (lat2 - lat1);
+    double dlon =  78.71 * 1000. * (lon2 - lon1);
+    
+    return (size_t)(sqrt(dlat * dlat + dlon * dlon));
+}
+
 size_t* find_index(gen_array nodes, long int refI)
 {
     size_t l = array_length(&nodes);
@@ -32,6 +41,25 @@ size_t* find_index(gen_array nodes, long int refI)
 	}
     }
     return NULL;
+}
+
+
+size_t find_nearest(gen_array nodes, double lat, double lon)
+{
+    size_t mind = UINT32_MAX;
+    size_t index = 0;
+    size_t l = array_length(&nodes);
+    for(size_t i = 0; i < l; ++i)
+    {
+	osm_node_t* nd = (osm_node_t*)array_get(&nodes, i);
+	size_t d = distance(lat, lon, nd->lat, nd->lon);
+	if(d < mind)
+	{
+	    mind = d;
+	    index = i;
+	}
+    }
+    return index;
 }
 
 _Bool node_name_is(xmlTextReaderPtr reader, xmlChar const* expect)
@@ -155,13 +183,12 @@ void process_osm_way(xmlTextReaderPtr reader, gen_array nodes, graph_t* graph)
 		size_t idxFst = *(size_t*)array_get(&nds, i    );
 		size_t idxSnd = *(size_t*)array_get(&nds, i + 1);
 		
-		osm_node_t* first  = (osm_node_t*)array_get(&nodes, idxFst);
-		osm_node_t* second = (osm_node_t*)array_get(&nodes, idxSnd);
+		osm_node_t* fst = (osm_node_t*)array_get(&nodes, idxFst);
+		osm_node_t* snd = (osm_node_t*)array_get(&nodes, idxSnd);
 
-		double dlat = 111.32 * 1000. * (first->lat - second->lat);
-		double dlon =  78.71 * 1000. * (first->lon - second->lon);
-		
-		size_t dist = (size_t)sqrt(dlat * dlat + dlon * dlon);
+			
+		size_t dist = distance(fst->lat, fst->lon,
+				       snd->lat, snd->lon); 
 	        graph_add_edge(graph, idxFst, idxSnd, dist, xmlStrdup(name));
 	    }
 	}

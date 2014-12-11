@@ -1,0 +1,3 @@
+set dgrid3d 50,50 qnorm 2
+splot "statsj.csv" using 1:2:3 with lines
+pause -1 

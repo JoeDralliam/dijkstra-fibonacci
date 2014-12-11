@@ -71,7 +71,7 @@ edge_list const* graph_adjacent_vertices(graph_t const* graph, size_t v)
     return array_get(graph, v);
 }
 
-_Bool connexe(graph_t const* graph)
+_Bool graph_connexe(graph_t const* graph)
 {
     size_t vcount = graph_vertices_count(graph);
     if(vcount == 0)
@@ -120,13 +120,27 @@ _Bool connexe(graph_t const* graph)
     return res;    
 }
 
-
-graph_t graph_read_from_file(FILE* fin)
+_Bool graph_adjacent(graph_t* g, size_t a, size_t b)
 {
-    size_t nVert, nEdge;
-    fscanf(fin, "%lu%lu", &nVert, &nEdge);
+    edge_list* adj = array_get(g, a);
+    size_t l = array_length(adj);
+    for(size_t i = 0; i < l; ++i)
+    {
+	if(((edge_t*)array_get(adj, i))->vertex == b)
+	{
+	    return true;
+	}
+    }
+    return false;
+}
+
+
+graph_t graph_read_from_file(FILE* fin, size_t* nEdge)
+{
+    size_t nVert;
+    fscanf(fin, "%lu%lu", &nVert, nEdge);
     graph_t graph = graph_create(nVert);
-    for(size_t i = 0; i < nEdge; ++i)
+    for(size_t i = 0; i < *nEdge; ++i)
     {
 	size_t from, to, weight;
 	fscanf(fin, "%lu%lu%lu", &from, &to, &weight);

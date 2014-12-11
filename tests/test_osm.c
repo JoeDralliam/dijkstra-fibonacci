@@ -26,12 +26,11 @@ int main(int argc, char** argv)
 	graph = graph_read_from_file(stdin);
     }
 
-    size_t* iPtr = find_index(nodes, 15641131);
-    size_t i = *iPtr;
-    size_t* jPtr = find_index(nodes, 30560224);
-    size_t j = *jPtr;
-    free(iPtr);
-    free(jPtr);
+    /* 45, rue d'Ulm */
+    size_t i = find_nearest(nodes, 48.8422951, 2.3442717);
+
+    /* Croisement de l'avenue Jean Moulin et du boulevard Brune */
+    size_t j = find_nearest(nodes, 48.82462  , 2.31945 );
     
     gen_array paths = array_create();
     distance_list dist = dijkstra(&graph, i, &paths);

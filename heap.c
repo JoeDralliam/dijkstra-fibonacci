@@ -49,14 +49,15 @@ void heap_recursive_free(heap_t* heap)
 void heap_add_to_root(heap_t* heap, heap_t* child)
 {
     assert(heap != child);
-    assert(is_min_heap(heap));
+/*    assert(is_min_heap(heap));
     assert(is_min_heap(child));
+*/
     assert(heap->val <= child->val);
 
         
     array_push_back(&heap->children, child);
     
-    assert(is_min_heap(heap));
+/*    assert(is_min_heap(heap)); */
     
 }
 
