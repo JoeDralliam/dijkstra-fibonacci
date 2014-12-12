@@ -139,9 +139,9 @@ int main(int argc, char** argv)
 
     srand(time.tv_sec * 1000L * 1000L + time.tv_usec);
     
-    size_t nVertex = rand_int(100, 10 * 1000);
-    size_t nEdge   = rand_int(1 + nVertex / 2,
-			      10 * nVertex);
+    size_t nVertex = rand_int(100, 1000 * 1000);
+    size_t nEdge   = rand_int(10,
+			      10 * 1000);
     graph_t g;
     gen_array p = generate_graph(nVertex, nEdge, 1000, &g);
 

@@ -1,0 +1,32 @@
+# Compilation
+Pour compiler le projet, taper `make`.
+Pour compiler le bonus, taper `make exec_bonus`. Le bonus dépend de libxml2.
+
+# Execution du projet (exec_dijkstra)
+Le programme principal, exec_dijkstra, prend diverses options :
+   --in-file _file_ : definit le fichier de lecture du graphe (par défaut : stdin)
+   --stat-file _file_ : spécifie un fichier d'écriture auquel est ajouté les statistiques d'éxécution sous forme de triplet nombre de sommets, nombre d'arêtes et temps d'éxécution (par défaut : pas de fichier)
+   --connexity-test : force la vérification de la connexité du graphe et échoue s'il n'est pas connexe (par défaut : désactivé)
+   --use-fibonacci-heap : utilise un tas de fibonacci (par défaut : activé)
+   --use-array : utilise un tableau (par défaut : désactivé)
+   --silent : n'affiche rien sur la sortie standard (par défaut : désactivé)
+   --source _n_ : spécifie le noeud source de dijkstra (par defaut : 0)
+
+# Execution du bonus (exec_bonus)
+Le bonus a principalement deux modes d'éxécution :
+   --shortest-path : trouve le chemin le plus court entre deux sommets (mode par défaut)
+   --nearest-stations : trouve les station ratp les plus proche d'un sommet
+
+Leur options communes sont :
+    --source _lat_ _lon_ : spécifie la position du point source; le noeud le plus proche (pour la norme 2) est choisi comme noeud source (par défaut: coordonnées du 45 rue d'Ulm)
+    --region-file _file_ : spécifie le nom du fichier osm décrivant la région (par défaut : "paris.osm")
+
+Lors de la recherche du plus court chemin, les paramètre additionnels sont:
+     --destination _lat_ _lon_ : spécifie la position du point de destination; le noeud le plus proche est choisi comme noeud de destination (par défaut: coordonnées du croisement de l'avenue Jean Moulin et du Boulevard Brune)
+
+Lors de la recherche des plus proches stations :
+     --stations-file _file_ : spécifie le fichier csv de la ratp à utiliser (par défaut: "ratp.csv")
+     --nearer-than _dist_ : spécifie la distance maximale (dans le graphe des station à afficher. 0 pour ne pas mettre de limite. (par défaut : 0)
+     --bus, --metro, --tram: ajoute le type de station correspondante à la recherche. Ne sont pas mutuellement exclusifs. (par défaut: aucun type)
+     
+Le noeud du graphe sont les noeud du fichier open street map; chaque arête correspond à deux "nd" consécutives dans un balise "way".
