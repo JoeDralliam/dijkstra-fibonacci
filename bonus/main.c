@@ -30,7 +30,7 @@ int main(int argc, char** argv)
     _Bool stationSearch = false;
     int stationKind = 0;
     char* regionFilename = "paris.osm";
-    FILE* stations = "ratp.csv";
+    FILE* stations = fopen("ratp.csv", "r");
     size_t radius = 0;
     
     for(int i = 1; i < argc; ++i)
@@ -81,6 +81,7 @@ int main(int argc, char** argv)
 	{
 	    assert(i + 1 < argc);
 	    ++i;
+	    fclose(stations);
 	    stations = fopen(argv[i], "r");
 	}
 	else if(strcmp(argv[i], "--nearer-than") == 0)
@@ -165,6 +166,8 @@ int main(int argc, char** argv)
 	    printf("Erreur: chemin introuvable !\n");
 	}
     }
+
+    fclose(stations);
 
     dijkstra_free_paths(&paths);	
     dijkstra_free_distances(&dist);

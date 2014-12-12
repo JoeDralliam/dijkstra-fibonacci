@@ -38,13 +38,13 @@ TESTS=$(patsubst $(TEST_DIR)/%.c,%.test,$(TESTS_SOURCES))
 all:$(TARGETS)
 
 exec_dijkstra:$(OBJECTS) $(DIJKSTRA_OBJECTS)
-	$(CC) $(FLAGS) $(LINK_FLAGS) $^ $(OUTPUT) $@
+	$(CC) $(FLAGS)  $^ $(LINK_FLAGS) $(OUTPUT) $@
 
 exec_bonus:$(BONUS_OBJECTS) $(OBJECTS)
-	$(CC) $(BONUS_FLAGS) $(BONUS_LINK_FLAGS) $^ $(OUTPUT) $@
+	$(CC) $(BONUS_FLAGS) $^ $(BONUS_LINK_FLAGS) $(OUTPUT) $@
 
 gen_graph_dijkstra:$(OBJECTS)
-	$(CC) $(FLAGS) $(LINK_FLAGS) $^ gen_tests/graph_dijkstra.c $(OUTPUT) $@
+	$(CC) $(FLAGS)  $^ $(LINK_FLAGS) gen_tests/graph_dijkstra.c $(OUTPUT) $@
 
 tests:$(TESTS)
 
@@ -64,16 +64,16 @@ $(BUILD_BONUS_DIR):
 	mkdir -p $(BUILD_BONUS_DIR)
 
 
-$(BUILD_DIR)/%.o:%.c $(BUILD_DIR)
+$(OBJECTS): $(BUILD_DIR)/%.o:%.c $(BUILD_DIR)
 	$(CC) $(FLAGS) $(COMPILE) $< $(OUTPUT) $@
 
 $(BUILD_TEST_DIR)/%.o:$(TEST_DIR)/%.c $(BUILD_TEST_DIR)
 	$(CC) $(FLAGS) $(COMPILE) $< $(OUTPUT) $@
 
-$(BUILD_DIJKSTRA_DIR)/%.o:$(DIJKSTRA_DIR)/%.c $(BUILD_DIJKSTRA_DIR)
+$(DIJKSTRA_OBJECTS): $(BUILD_DIJKSTRA_DIR)/%.o:$(DIJKSTRA_DIR)/%.c $(BUILD_DIJKSTRA_DIR)
 	$(CC) $(FLAGS) $(COMPILE) $< $(OUTPUT) $@
 
-$(BUILD_BONUS_DIR)/%.o:$(BONUS_DIR)/%.c $(BUILD_BONUS_DIR)
+$(BONUS_OBJECTS): $(BUILD_BONUS_DIR)/%.o:$(BONUS_DIR)/%.c $(BUILD_BONUS_DIR)
 	$(CC) $(BONUS_FLAGS) $(COMPILE) $< $(OUTPUT) $@
 
 
