@@ -158,9 +158,9 @@ int main(int argc, char** argv)
     array_free(&p);
     
     graph_free(&g, NULL);
-    struct timespec t, t2;
+/*    struct timespec t, t2;
     t.tv_sec = 0;
     t.tv_nsec = 10L * 1000L * 1000L;
     nanosleep(&t, &t2);
-
+*/
 }

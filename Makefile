@@ -24,9 +24,7 @@ BUILD_BONUS_DIR=$(BUILD_DIR)/$(BONUS_DIR)
 BONUS_SOURCES=$(wildcard $(BONUS_DIR)/*.c)
 BONUS_OBJECTS=$(patsubst $(BONUS_DIR)/%.c,$(BUILD_BONUS_DIR)/%.o,$(BONUS_SOURCES))
 
-TARGETS=exec_dijkstra exec_bonus
-
-#gen_graph_dijkstra
+TARGETS=exec_dijkstra gen_graph_dijkstra gen_strassen
 
 BUILD_TEST_DIR=$(BUILD_DIR)/$(TEST_DIR)
 TESTS_SOURCES=$(wildcard $(TEST_DIR)/*.c)
@@ -43,8 +41,12 @@ exec_dijkstra:$(OBJECTS) $(DIJKSTRA_OBJECTS)
 exec_bonus:$(BONUS_OBJECTS) $(OBJECTS)
 	$(CC) $(BONUS_FLAGS) $^ $(BONUS_LINK_FLAGS) $(OUTPUT) $@
 
-gen_graph_dijkstra:$(OBJECTS)
-	$(CC) $(FLAGS)  $^ $(LINK_FLAGS) gen_tests/graph_dijkstra.c $(OUTPUT) $@
+gen_graph_dijkstra:$(OBJECTS) gen_tests/graph_dijkstra.c
+	$(CC) $(FLAGS)  $^ $(LINK_FLAGS) $(OUTPUT) $@
+
+gen_strassen:gen_tests/random_matrix.c gen_tests/strassen.c
+	$(CC) $(FLAGS) $^ $(LINK_FLAGS) -Igen_tests $(OUTPUT) $@
+
 
 tests:$(TESTS)
 

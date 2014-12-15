@@ -1,5 +1,5 @@
 # Compilation
-Pour compiler le projet, taper `make`.
+Pour compiler le projet, taper `make` (les éxecutables de génération de tests sont également compilés).
 Pour compiler le bonus, taper `make exec_bonus`. Le bonus dépend de libxml2.
 
 # Execution du projet (exec_dijkstra)
@@ -11,6 +11,9 @@ Le programme principal, exec_dijkstra, prend diverses options :
    --use-array : utilise un tableau (par défaut : désactivé)
    --silent : n'affiche rien sur la sortie standard (par défaut : désactivé)
    --source _n_ : spécifie le noeud source de dijkstra (par defaut : 0)
+
+Par exemple:
+./exec_dijkstra --in-file dijkstra_tests/dijkstra1.in --use-fibonacci --source 0
 
 # Execution du bonus (exec_bonus)
 Le bonus a principalement deux modes d'éxécution :
@@ -26,7 +29,13 @@ Lors de la recherche du plus court chemin, les paramètre additionnels sont:
 
 Lors de la recherche des plus proches stations :
      --stations-file _file_ : spécifie le fichier csv de la ratp à utiliser (par défaut: "ratp.csv")
-     --nearer-than _dist_ : spécifie la distance maximale (dans le graphe des station à afficher. 0 pour ne pas mettre de limite. (par défaut : 0)
+     --nearer-than _dist_ : spécifie la distance maximale (dans le graphe des station à afficher). 0 pour ne pas mettre de limite. (par défaut : 0)
      --bus, --metro, --tram: ajoute le type de station correspondante à la recherche. Ne sont pas mutuellement exclusifs. (par défaut: aucun type)
      
 Le noeud du graphe sont les noeud du fichier open street map; chaque arête correspond à deux "nd" consécutives dans un balise "way".
+
+
+## Generation de tests
+Les générateur de tests (préfixé par gen_) se lance de la manière suivante :
+gen_### <nom du fichier d'entrée à générer> <nom du fichier de sorties à générer>
+Des fichier tests se trouvent deans dijkstra_tests/ et strassen_tests/
